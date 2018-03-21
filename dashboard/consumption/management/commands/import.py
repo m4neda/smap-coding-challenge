@@ -14,9 +14,15 @@ from pytz import timezone
 class Command(BaseCommand):
     help = 'import data'
 
-    def read_consumption(self):
-        path = self.consumption_path
+    def handle(self, *args, **options):
+        user_data_path = '../data/user_data.csv'
+        consumption_path = '../data/consumption/'
 
+        self.read_user_data(user_data_path)
+        self.read_consumption(consumption_path)
+
+    @staticmethod
+    def read_consumption(path):
         # get csv file name list
         files = [relpath(x, path) for x in glob(join(path, '*.csv'))]
         for file in files:
@@ -36,24 +42,14 @@ class Command(BaseCommand):
                         consumption=consumption,
                     )
 
-
-    def read_user_data(self):
-        path = self.user_data_path
-
+    @staticmethod
+    def read_user_data(path):
         with open(path) as f:
-            reader = csv.reader(f)
-            _header = next(reader)
-            for row in reader:
-                _, created = User.objects.get_or_create(
-                    user_id=row[0],
-                    area=row[1],
-                    tariff=row[2],
-                )
+            reader = csv.reader(f, delimiter=',')
+            header = next(reader)
+            User.objects.bulk_create([User(
+                user_id=row[0],
+                area=row[1],
+                tariff=row[2],
+            ) for row in reader])
 
-
-    def handle(self, *args, **options):
-        self.user_data_path = '../data/user_data.csv'
-        self.consumption_path = '../data/consumption/'
-
-        self.read_user_data()
-        self.read_consumption()
