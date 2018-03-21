@@ -25,6 +25,29 @@ SECRET_KEY = '=stpmw2pq0*w(_2t4t90#j_*b$%#7q0e3jk(we#ttyp#y(#$qe'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+if DEBUG:
+    INTERNAL_IPS = ['127.0.0.1', 'localhost']
+
+    def custom_show_toolbar(request):
+        return True
+
+    DEBUG_TOOLBAR_PANELS = [
+        'debug_toolbar.panels.timer.TimerPanel',
+        'debug_toolbar.panels.request.RequestPanel',
+        'debug_toolbar.panels.sql.SQLPanel',
+        'debug_toolbar.panels.templates.TemplatesPanel',
+        'debug_toolbar.panels.cache.CachePanel',
+        'debug_toolbar.panels.logging.LoggingPanel',
+    ]
+
+    DEBUG_TOOLBAR_CONFIG = {
+        'INTERCEPT_REDIRECTS': False,
+        'SHOW_TOOLBAR_CALLBACK': custom_show_toolbar,
+        'HIDE_DJANGO_SQL': False,
+        'TAG': 'div',
+        'ENABLE_STACKTRACES': True,
+    }
+
 ALLOWED_HOSTS = []
 
 
@@ -37,6 +60,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
     'consumption',
 ]
 
@@ -48,6 +72,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'dashboard.urls'
@@ -119,3 +144,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
