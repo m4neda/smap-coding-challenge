@@ -30,23 +30,21 @@ class Command(BaseCommand):
             user_id, _ext = os.path.splitext(file)
 
             with open(path + file) as f:
-                reader = csv.reader(f)
+                reader = csv.reader(f, delimiter=',')
                 _header = next(reader)
+                user_id = User.objects.get(user_id=int(user_id))
 
-                for row in reader:
-                    consumption = float(row[1])
-                    datetime_val = datetime.strptime(row[0], '%Y-%m-%d %H:%M:%S').astimezone(timezone(settings.TIME_ZONE))
-                    _, created = Consumption.objects.get_or_create(
-                        user_id= User.objects.get(user_id=int(user_id)),
-                        datetime=datetime_val,
-                        consumption=consumption,
-                    )
+                Consumption.objects.bulk_create([Consumption(
+                    user_id=user_id,
+                    datetime=datetime.strptime(row[0], '%Y-%m-%d %H:%M:%S').astimezone(timezone(settings.TIME_ZONE)),
+                    consumption=float(row[1]),
+                ) for row in reader])
 
     @staticmethod
     def read_user_data(path):
         with open(path) as f:
             reader = csv.reader(f, delimiter=',')
-            header = next(reader)
+            _header = next(reader)
             User.objects.bulk_create([User(
                 user_id=row[0],
                 area=row[1],
