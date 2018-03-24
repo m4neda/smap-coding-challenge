@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import socket
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,7 +24,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '=stpmw2pq0*w(_2t4t90#j_*b$%#7q0e3jk(we#ttyp#y(#$qe'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if socket.gethostname() == 'productionserver.com':
+    DEBUG = False
+else:
+    DEBUG = True
 
 if DEBUG:
     INTERNAL_IPS = ['127.0.0.1', 'localhost']
@@ -48,7 +52,8 @@ if DEBUG:
         'ENABLE_STACKTRACES': True,
     }
 
-ALLOWED_HOSTS = []
+if not DEBUG:
+    ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -62,6 +67,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debug_toolbar',
     'consumption',
+    'django_tables2',
+    'graphos',
 ]
 
 MIDDLEWARE = [
@@ -145,7 +152,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# collectstatic
+STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
 
 LOGGING = {
     'version': 1,
