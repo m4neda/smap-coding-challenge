@@ -7,19 +7,23 @@ from django.db import models
 
 
 class User(models.Model):
-    user_id = models.PositiveIntegerField()
+    id = models.PositiveIntegerField(primary_key=True)
     area = models.CharField(max_length=128)
     tariff = models.CharField(max_length=128)
 
     def __str__(self):
-        return '{0}'.format(self.user_id)
+        return '{0}'.format(self.id)
 
 
 class Consumption(models.Model):
-    user_id = models.ForeignKey('User', on_delete=models.CASCADE)
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
     datetime = models.DateTimeField()
     consumption = models.PositiveIntegerField()
 
     def __str__(self):
-        return '{0}'.format(self.user_id)
+        return '{0}'.format(self.user)
+
+    @staticmethod
+    def get_avg_consumption_groupby_user():
+        return Consumption.objects.values('user__id').annotate(models.Avg('consumption'))
 
