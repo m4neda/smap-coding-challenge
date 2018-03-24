@@ -1,12 +1,24 @@
 <!DOCTYPE html>
 <html>
-  <head>
-  </head>
-  <body>
+<head>
 
-  <!--for display debug toolbar-->
-  <div></div>
+    {% load staticfiles %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-    {% block content %}{% endblock content %}
-  </body>
+    <script type="text/javascript" src="{% static 'bootstrap/vendor/jquery/jquery.min.js' %}"></script>
+
+    <!-- Morris Charts -->
+    <link href="{% static 'bootstrap/vendor/morrisjs/morris.css' %}" rel="stylesheet">
+    <script src="{% static 'bootstrap/vendor/raphael/raphael.min.js' %}"></script>
+    <script src="{% static 'bootstrap/vendor/morrisjs/morris.min.js' %}"></script>
+
+</head>
+<body>
+
+{% block content %}{% endblock content %}
+</body>
 </html>
