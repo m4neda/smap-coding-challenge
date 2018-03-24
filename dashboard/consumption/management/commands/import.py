@@ -32,10 +32,10 @@ class Command(BaseCommand):
             with open(path + file) as f:
                 reader = csv.reader(f, delimiter=',')
                 _header = next(reader)
-                user_id = User.objects.get(user_id=int(user_id))
+                user = User.objects.get(id=int(user_id))
 
                 Consumption.objects.bulk_create([Consumption(
-                    user_id=user_id,
+                    user=user,
                     datetime=datetime.strptime(row[0], '%Y-%m-%d %H:%M:%S').astimezone(timezone(settings.TIME_ZONE)),
                     consumption=float(row[1]),
                 ) for row in reader])
@@ -46,7 +46,7 @@ class Command(BaseCommand):
             reader = csv.reader(f, delimiter=',')
             _header = next(reader)
             User.objects.bulk_create([User(
-                user_id=row[0],
+                id=row[0],
                 area=row[1],
                 tariff=row[2],
             ) for row in reader])
