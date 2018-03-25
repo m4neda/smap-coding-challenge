@@ -57,5 +57,7 @@ class DetailView(generic.TemplateView):
 
         context = super().get_context_data(**kwargs)
         context["message"] = "Detail View"
+        table = Consumption.queryset_consumption_avg_per_user()
+        context['table'] = table
         return context
 
