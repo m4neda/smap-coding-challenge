@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.db.models import Func
 
 # Create your models here.
 
@@ -24,8 +25,8 @@ class Consumption(models.Model):
         return '{0}'.format(self.user)
 
     @staticmethod
-    def get_avg_consumption_groupby_user():
-        return Consumption.objects.values('user__id').annotate(models.Avg('consumption'))
+    def queryset_consumption_avg_per_user():
+        return Consumption.objects.values('user__id').annotate(consumption__avg=Round(models.Avg('consumption')))
 
     @staticmethod
     def queryset_consumption_avg_per_day():
@@ -36,3 +37,6 @@ class Consumption(models.Model):
         return queryset
 
 
+class Round(Func):
+    function = 'ROUND'
+    template = '%(function)s(%(expressions)s, 2)'
