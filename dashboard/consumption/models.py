@@ -27,3 +27,12 @@ class Consumption(models.Model):
     def get_avg_consumption_groupby_user():
         return Consumption.objects.values('user__id').annotate(models.Avg('consumption'))
 
+    @staticmethod
+    def queryset_consumption_avg_per_day():
+        queryset = Consumption.objects.all() \
+            .extra(select={'day': 'date( datetime )'}) \
+            .values('day') \
+            .annotate(models.Avg('consumption'))
+        return queryset
+
+
