@@ -29,9 +29,8 @@ class SummaryView(generic.TemplateView):
         context['chart'] = chart
 
         # for table
-        queryset = User.objects.all()
-        table = UserTable(queryset)
-        RequestConfig(self.request).configure(table)
+        queryset = User.objects.all().order_by('id')
+        table = queryset
         context['table'] = table
 
         return context
