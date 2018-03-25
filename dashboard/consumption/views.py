@@ -28,6 +28,8 @@ class SummaryView(generic.TemplateView):
         chart = LineChart(data_source)
         context['chart'] = chart
 
+        context['table'] = Consumption.queryset_consumption_avg_per_user()
+
         return context
 
     @staticmethod
