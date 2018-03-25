@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.views import generic
 
 from .models import User, Consumption
-from .tables import ConsumptionTable
+from .tables import UserTable
 
 from graphos.sources.simple import SimpleDataSource
 from graphos.renderers.morris import LineChart
@@ -29,7 +29,9 @@ class SummaryView(generic.TemplateView):
         context['chart'] = chart
 
         # for table
-        table = Consumption.queryset_consumption_avg_per_user()
+        queryset = User.objects.all()
+        table = UserTable(queryset)
+        RequestConfig(self.request).configure(table)
         context['table'] = table
 
         return context
