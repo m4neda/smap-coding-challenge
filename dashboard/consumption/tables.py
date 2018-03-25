@@ -1,9 +1,9 @@
 import django_tables2 as tables
-from .models import User, Consumption
+from .models import User
 
 
-class ConsumptionTable(tables.Table):
+class UserTable(tables.Table):
 
     class Meta:
-        model = Consumption
+        model = User
         template_name = 'django_tables2/bootstrap.html'
