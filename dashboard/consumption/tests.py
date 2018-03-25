@@ -35,6 +35,7 @@ class UserTests(TestCase):
         saved_user = User.objects.all()
         actual_user = saved_user[0]
 
+        self.assertEqual(saved_user.count(), 1)
         self.assertEqual(actual_user.id, id)
         self.assertEqual(actual_user.area, area)
         self.assertEqual(actual_user.tariff, tariff)
