@@ -28,7 +28,9 @@ class SummaryView(generic.TemplateView):
         chart = LineChart(data_source)
         context['chart'] = chart
 
-        context['table'] = Consumption.queryset_consumption_avg_per_user()
+        # for table
+        table = Consumption.queryset_consumption_avg_per_user()
+        context['table'] = table
 
         return context
 
