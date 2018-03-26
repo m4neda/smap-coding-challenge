@@ -90,11 +90,8 @@ ENV/
 
 
 # my conf
-static/
 .DS_Store
 .idea/
 dashboard/.DS_Store
-dashboard/consumption/migrations/0001_initial.py
-dashboard/consumption/resources.py
 data/.DS_Store
 /dashboard/db.sqlite3
