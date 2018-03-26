@@ -29,6 +29,8 @@ if socket.gethostname() == 'productionserver.com':
 else:
     DEBUG = True
 
+DEBUG = False
+
 if DEBUG:
     INTERNAL_IPS = ['127.0.0.1', 'localhost']
 
@@ -67,8 +69,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debug_toolbar',
     'consumption',
-    'django_tables2',
     'graphos',
+    'django_nose',
 ]
 
 MIDDLEWARE = [
@@ -158,6 +160,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+NOSE_ARGS = [
+    '--with-coverage',  # coverage を取る
+    '--cover-html',  # coverage を html で cover/ に出力する
+    '--cover-package=consumption',
+]
 
 LOGGING = {
     'version': 1,
