@@ -29,11 +29,11 @@ class Consumption(models.Model):
         return Consumption.objects.values('user__id').annotate(consumption__avg=Round(models.Avg('consumption')))
 
     @staticmethod
-    def queryset_consumption_avg_per_day():
+    def queryset_consumption_sum_per_day():
         queryset = Consumption.objects.all() \
             .extra(select={'day': 'date( datetime )'}) \
             .values('day') \
-            .annotate(models.Avg('consumption'))
+            .annotate(models.Sum('consumption'))
         return queryset
 
 
