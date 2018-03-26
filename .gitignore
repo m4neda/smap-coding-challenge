@@ -95,3 +95,4 @@ ENV/
 dashboard/.DS_Store
 data/.DS_Store
 /dashboard/db.sqlite3
+/dashboard/cover/
