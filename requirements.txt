@@ -1,6 +1,7 @@
 Django==1.11
 django-debug-toolbar
 django-pandas
-django-tables2
 pytz
 django-graphos
+django-nose
+coverage
