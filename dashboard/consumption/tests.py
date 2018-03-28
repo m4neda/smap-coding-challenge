@@ -77,20 +77,6 @@ class SummaryViewTests(TestCase):
         self.assertContains(response, user.tariff)
 
 
-class DetailViewTests(TestCase):
-    def test_table_html(self):
-        response = self.client.get(reverse('consumption:detail'))
-
-        self.assertContains(response, "<th>user</th>")
-        self.assertContains(response, "<th>consumption_avg</th>")
-
-    def test_empty_table(self):
-        response = self.client.get(reverse('consumption:detail'))
-
-        self.assertQuerysetEqual(response.context['table'], [])
-        self.assertNotContains(response, "<td>")
-
-
 class UserTests(TestCase):
     def test_no_users(self):
         user_list = User.objects.all()
