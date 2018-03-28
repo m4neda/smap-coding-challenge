@@ -23,8 +23,8 @@ class SummaryView(generic.TemplateView):
         context['chart'] = chart
         context['chart_title'] = "Sum Consumption Line Chart"
 
-        context['table'] = User.objects.all().order_by('id')
-        context['table_title'] = "User List"
+        context['table'] = Consumption.queryset_consumption_avg_per_user()
+        context['table_title'] = "Average Consumption Per User"
 
         return context
 
@@ -58,7 +58,5 @@ class DetailView(generic.TemplateView):
 
         context = super().get_context_data(**kwargs)
         context["title"] = "Detail"
-        context['table'] = Consumption.queryset_consumption_avg_per_user()
-        context['table_title'] = "Average Consumption Per User"
         return context
 
