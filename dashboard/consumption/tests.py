@@ -65,16 +65,6 @@ class SummaryViewTests(TestCase):
         self.assertQuerysetEqual(response.context['table'], [])
         self.assertNotContains(response, "<td>")
 
-    def test_not_empty_table(self):
-        user = User.objects.create(id=3000, area="a1", tariff="t1")
-
-        response = self.client.get(reverse('consumption:summary'))
-
-        self.assertQuerysetEqual(response.context['table'], ['<User: 3000>'])
-        self.assertContains(response, user.id)
-        self.assertContains(response, user.area)
-        self.assertContains(response, user.tariff)
-
 
 class UserTests(TestCase):
     def test_no_users(self):
