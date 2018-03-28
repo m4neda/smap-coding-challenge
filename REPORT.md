@@ -1,30 +1,52 @@
-# テーブル定義
-- user_data.csvのareaとtariffのマスタが手元にあれば、それぞれでリレーションを作るべきでしょう
+# Installation
+1. clone this repo
 
-集約テーブル
+2. migrate
+```
+python manage.py migrate
+```
+3. import csv
+```
+python manage.py import
+```
+4. runserver
 
-## CSV インポート
-### バリデーション
-user_data.csv
-- user_idが数字かどうか
+# Issues
+### CSV Import function
+- no validation
 
-consumption
-- ファイル名のユーザーが存在するか
+For Example,
+Confirm existence of user when importing consumption data.
 
+- Data addition and update are not considered.
 
-## 集計
-- 一日あたりの合計
-- 一日あたりの平均
+### Model
+- no area & tariff master table.
 
-all()で取得しない
+- no Aggregate Tables
 
+### View
+- Line chart is not responsible design
 
-## summary
-- 折れ線グラフ 一日あたりの合計
-- 表 ユーザーの一覧とその一日あたりの平均値
+### Test
 
-一日あたりで集計する理由
+- no test about chart
 
-グラフが正しく描画されているかをテストしたい
+- no test about models.Round
 
-graphosがレスポンシブになっていない
+# technical decisions
+
+### CSV import function
+- Do not use arguments
+
+I thought that the location of CSV should be fixed.
+
+### added libraries
+- django-graphos
+
+A simple graph representation was enough, so I used this.
+
+- django-pandas & pandas
+
+Since the aggregated Queryset could not be handled by the graphos, it was used to convert from Queryset to Python list.
+
