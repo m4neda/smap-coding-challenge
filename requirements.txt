@@ -1,5 +1,6 @@
 Django==1.11
 django-debug-toolbar
+pandas
 django-pandas
 pytz
 django-graphos
