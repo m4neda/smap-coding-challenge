@@ -26,7 +26,7 @@ Confirm existence of user when importing consumption data.
 - no Aggregate Tables
 
 ### View
-- Line chart is not responsible design
+- not responsible design
 
 ### Test
 
