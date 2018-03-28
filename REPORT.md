@@ -1,15 +1,17 @@
 # Installation
 1. clone this repo
 
-2. migrate
+2. create virtual env and install requirements
+
+3. migrate
 ```
 python manage.py migrate
 ```
-3. import csv
+4. import csv
 ```
 python manage.py import
 ```
-4. runserver
+5. runserver
 
 # Issues
 ### CSV Import function
