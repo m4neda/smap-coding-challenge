@@ -19,28 +19,32 @@ class SummaryView(generic.TemplateView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Summary"
 
-        # for line Chart
-        queryset = Consumption.queryset_consumption_sum_per_day()
-        list_values = self.create_list_for_chart(queryset)
-        data_source = SimpleDataSource(data=list_values)
-        chart = LineChart(data_source)
+        chart = self.create_line_chart_consumption_sum()
         context['chart'] = chart
         context['chart_title'] = "Sum Consumption Line Chart"
 
-        # for table
-        queryset = User.objects.all().order_by('id')
-        table = queryset
-        context['table'] = table
+        context['table'] = User.objects.all().order_by('id')
         context['table_title'] = "User List"
 
         return context
 
+    def create_line_chart_consumption_sum(self):
+        queryset = Consumption.queryset_consumption_sum_per_day()
+        df = self.create_dataframe_for_chart_consumption_sum(queryset)
+        list_values = self.dataframe_to_list_with_header(df)
+        data_source = SimpleDataSource(data=list_values)
+        chart = LineChart(data_source)
+        return chart
+
     @staticmethod
-    def create_list_for_chart(queryset):
+    def create_dataframe_for_chart_consumption_sum(queryset):
         df = read_frame(queryset)
-        # First element is x axis
+        # First element is x axis, in django_graphos
         df = df.ix[:, ['day', 'consumption__sum', ]]
-        # create value list with headers
+        return df
+
+    @staticmethod
+    def dataframe_to_list_with_header(df):
         list_headers = df.columns.tolist()
         list_values = df.values.tolist()
         list_values.insert(0, list_headers)
@@ -54,8 +58,7 @@ class DetailView(generic.TemplateView):
 
         context = super().get_context_data(**kwargs)
         context["title"] = "Detail"
-        table = Consumption.queryset_consumption_avg_per_user()
-        context['table'] = table
+        context['table'] = Consumption.queryset_consumption_avg_per_user()
         context['table_title'] = "Average Consumption Per User"
         return context
 
