@@ -11,7 +11,7 @@ __pycache__/
 env/
 build/
 develop-eggs/
-dist/
+#dist/ bootstrap has dist directory @m4neda
 downloads/
 eggs/
 .eggs/
