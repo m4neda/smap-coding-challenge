@@ -42,16 +42,14 @@
                                 <thead>
                                 <tr>
                                     <th>user</th>
-                                    <th>area</th>
-                                    <th>tariff</th>
+                                    <th>consumption_avg</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for row in table %}
                                     <tr>
-                                        <td>{{ row.id }}</td>
-                                        <td>{{ row.area }}</td>
-                                        <td>{{ row.tariff }}</td>
+                                        <td>{{ row.user__id }}</td>
+                                        <td>{{ row.consumption__avg }}</td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
