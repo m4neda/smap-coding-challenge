@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import sys
 import socket
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -28,8 +29,6 @@ if socket.gethostname() == 'productionserver.com':
     DEBUG = False
 else:
     DEBUG = True
-
-DEBUG = False
 
 if DEBUG:
     INTERNAL_IPS = ['127.0.0.1', 'localhost']
@@ -67,7 +66,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'debug_toolbar',
     'consumption',
     'graphos',
     'django_nose',
@@ -81,8 +79,15 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+
+
+TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
+# Django debug toolbar
+if not TESTING:
+    MIDDLEWARE += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+    INSTALLED_APPS += ('debug_toolbar', )
+
 
 ROOT_URLCONF = 'dashboard.urls'
 
@@ -161,6 +166,16 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
 
+
+PROJECT_DIR = os.path.join(BASE_DIR, '..')
+DATA_DIR = os.path.join(PROJECT_DIR, 'data')
+TESTDATA_DIR = os.path.join(PROJECT_DIR, 'testdata')
+
+# import csv path
+IMPORT_USER_DATA_PATH = 'user_data.csv'
+IMPORT_CONSUMPTION_PATH = 'consumption'
+
+
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 NOSE_ARGS = [
     '--with-coverage',  # coverage を取る
@@ -193,3 +208,4 @@ LOGGING = {
         },
     }
 }
+
