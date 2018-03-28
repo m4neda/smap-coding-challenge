@@ -57,8 +57,7 @@ class SummaryViewTests(TestCase):
         response = self.client.get(reverse('consumption:summary'))
 
         self.assertContains(response, "<th>user</th>")
-        self.assertContains(response, "<th>area</th>")
-        self.assertContains(response, "<th>tariff</th>")
+        self.assertContains(response, "<th>consumption_avg</th>")
 
     def test_empty_table(self):
         response = self.client.get(reverse('consumption:summary'))
