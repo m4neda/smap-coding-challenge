@@ -4,13 +4,38 @@ from __future__ import unicode_literals
 from django.test import TestCase
 from django.conf import settings
 
+from .apps import ConsumptionConfig
 from .models import User, Consumption, Round
 
 from datetime import datetime
 from pytz import timezone
 
 from django.urls import reverse
+
+import os
+from django.core import management
+
 # Create your tests here.
+
+
+class ImportTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.import_command = management.load_command_class(ConsumptionConfig.name, 'import')
+        # change to test data path
+        cls.import_command.user_data_path = os.path.join(settings.TESTDATA_DIR, settings.IMPORT_USER_DATA_PATH)
+        cls.import_command.consumption_path = os.path.join(settings.TESTDATA_DIR, settings.IMPORT_CONSUMPTION_PATH)
+
+        # execute
+        cls.import_command.handle()
+
+    def test_imported_user_count(self):
+        user_list = User.objects.all()
+        self.assertEqual(user_list.count(), 1)
+
+    def test_imported_consumption_data(self):
+        consumption_list = Consumption.objects.all()
+        self.assertEqual(consumption_list.count(), 48)
 
 
 class UrlResolveTests(TestCase):
@@ -59,7 +84,11 @@ class DetailViewTests(TestCase):
         self.assertContains(response, "<th>user</th>")
         self.assertContains(response, "<th>consumption_avg</th>")
 
+    def test_empty_table(self):
+        response = self.client.get(reverse('consumption:detail'))
+
         self.assertQuerysetEqual(response.context['table'], [])
+        self.assertNotContains(response, "<td>")
 
 
 class UserTests(TestCase):
