@@ -16,6 +16,14 @@ class User(models.Model):
         return '{0}'.format(self.id)
 
 
+class Area(models.Moedl):
+    id = models.CharField(max_length=128)
+
+
+class Tariff(models.Model):
+    id = models.CharField(max_length=128)
+
+
 class Consumption(models.Model):
     user = models.ForeignKey('User', on_delete=models.CASCADE)
     datetime = models.DateTimeField()
